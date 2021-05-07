@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import "./App.css";
 import "./styles.css";
 import {
@@ -35,6 +35,9 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+
+import TextField from "@material-ui/core/TextField";
+
 import { motion } from "framer-motion";
 
 import uctmap from "./uctmap.png";
@@ -134,10 +137,24 @@ const LocationMarker = ({ top, left, name }) => {
 
 function App() {
   const classes = useStyles();
+  const [startDialogOpen, setStartDialogOpen] = useState(true);
+  const [name, setName] = useState("");
 
   //Reset the vh unit measurement
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+  const handleCloseStartDialog = () => {
+    setStartDialogOpen(false);
+  };
+
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleEnter = (event) => {
+    handleCloseStartDialog();
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -171,7 +188,55 @@ function App() {
             </Grid>
           </Toolbar>
         </AppBar>
+        <Dialog
+          onClose={handleCloseStartDialog}
+          aria-labelledby="simple-dialog-title"
+          open={startDialogOpen}
+          disableBackdropClick
+          disableEscapeKeyDown
+          BackdropProps={{
+            classes: {
+              root: classes.startBackdrop,
+            },
+          }}
+        >
+          <DialogTitle id="simple-dialog-title">Welcome to UniMeet</DialogTitle>
+          <Card className={classes.root} variant="outlined">
+            <CardContent>
+              <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                spacing={2}
+              >
+                <Grid item style={{ width: "100%" }}>
+                  <TextField
+                    label="Name"
+                    autoComplete="current-password"
+                    variant="filled"
+                    value={name}
+                    onChange={handleChangeName}
+                  />
+                </Grid>
+                <Grid item className={classes.formControl}>
+                  <Button
+                    variant={"contained"}
+                    disableElevation
+                    onClick={handleEnter}
+                    width="100%"
+                    disabled={name == ""}
+                    color={"secondary"}
+                  >
+                    Enter UCT
+                  </Button>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Dialog>
         <TransformWrapper
+          style={{}}
           options={{
             limitToBounds: false,
           }}
@@ -197,12 +262,11 @@ function App() {
             <>
               <TransformComponent>
                 <div style={{ position: "relative" }}>
-                  <img src={uctmap} width="100%" />
-                  <LocationMarker top={500} left={250} name={"Leslie"} />
-                  <LocationMarker top={480} left={680} name={"Library"} />
-                  <LocationMarker top={550} left={1200} name={"RW James"} />
-                  <LocationMarker top={400} left={300} name={"Menzies"} />
-                  <LocationMarker top={500} left={250} name={"Leslie"} />
+                  <img src={uctmap} width="1500px" />
+                  <LocationMarker top={540} left={270} name={"Leslie"} />
+                  <LocationMarker top={430} left={720} name={"Library"} />
+                  <LocationMarker top={580} left={1250} name={"RW James"} />
+                  <LocationMarker top={410} left={300} name={"Menzies"} />
                 </div>
               </TransformComponent>
             </>
