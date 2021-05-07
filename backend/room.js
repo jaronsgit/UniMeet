@@ -1,59 +1,29 @@
-var Peer = require('simple-peer')
+import React, { useEffect, useRef } from "react";
+import Peer from "simple-peer";
+import io from "socket.io-client";
+
+
 
 var roomPeers = []
 
+const room = (params) => {
+    const userVoice = useRef();
+    const socket = useRef();
+    const peers = useRef();
+    const roomID = params.roomID;
 
-navigator.mediaDevices.getUserMedia({
+    useEffect(() =>{
+        socket.current = io.connect("/");
+        navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
+            userVoice.current.srcObject = stream;
+            socket.current.emit("join", roomID);
+            socket.current.on("users", users => {
 
-}).then(gotMedia).catch(() => {})
+            })
+        })
+    })
+}
 //Adds a peers to the room
 function addPeer (signal, newPeerID, stream) {
-
-    const newPeer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream
-    })
-
-    if (roomPeers.length === 0){
-        roomPeers.push(newPeer);
-    }
-    else{
-        for (peer in roomPeers){
-
-            peer.on('signal', data => {
-                newPeer.signal(data)
-            })
-
-            newPeer.on('signal', data => {
-                peer.signal(data)
-            })
-
-            newPeer.on('stream', stream => {
-                var audio = document.querySelector('audio')
-
-                if ('srcObject' in video){
-                    audio.srcObject = stream
-                }
-                else{
-                    audio.src = window.URL.createObjectURL(stream) //This is needed for older browser support
-                }
-                audio.play()
-            })
-
-            peer.on('stream', stream => {
-                var audio = document.querySelector('audio')
-
-                if ('srcObject' in video){
-                    audio.srcObject = stream
-                }
-                else{
-                    audio.src = window.URL.createObjectURL(stream) //This is needed for older browser support
-                }
-                audio.play()
-            })
-
-        }
-    }
 
 }
