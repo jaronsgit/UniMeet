@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Room from "./routes/Room";
+import Room from "./backend/room"
 
 function App() {
     return (
