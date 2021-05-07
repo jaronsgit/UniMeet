@@ -35,9 +35,11 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+import { motion } from "framer-motion";
 
 import uctmap from "./uctmap.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { blue, purple } from "@material-ui/core/colors";
 
 const font = '"Vollkorn", Arial, Helvetica, sans-serif';
 const theme = createMuiTheme({
@@ -97,6 +99,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LocationButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(blue[500]),
+    backgroundColor: blue[500],
+    "&:hover": {
+      backgroundColor: blue[700],
+    },
+  },
+}))(Button);
+
+//250, 500
+
+const LocationMarker = ({ top, left, name }) => {
+  return (
+    <LocationButton
+      variant="contained"
+      style={{
+        position: "absolute",
+        left: `${left}px`,
+        top: `${top}px`,
+      }}
+      component={motion.div}
+      whileHover={{
+        scale: 1.2,
+        transition: { duration: 0.3 },
+      }}
+      whileTap={{ scale: 0.9 }}
+    >
+      {name}
+    </LocationButton>
+  );
+};
+
 function App() {
   const classes = useStyles();
 
@@ -123,7 +158,7 @@ function App() {
         <AppBar
           position="static"
           elevation={0}
-          style={{ border: "1px solid red" }}
+          // style={{ border: "1px solid red" }}
         >
           <Toolbar>
             <Grid container direction="row" alignItems="center">
@@ -163,16 +198,11 @@ function App() {
               <TransformComponent>
                 <div style={{ position: "relative" }}>
                   <img src={uctmap} width="100%" />
-                  <Button
-                    variant="contained"
-                    style={{
-                      position: "absolute",
-                      left: "650px",
-                      top: "450px",
-                    }}
-                  >
-                    Library
-                  </Button>
+                  <LocationMarker top={500} left={250} name={"Leslie"} />
+                  <LocationMarker top={480} left={680} name={"Library"} />
+                  <LocationMarker top={550} left={1200} name={"RW James"} />
+                  <LocationMarker top={400} left={300} name={"Menzies"} />
+                  <LocationMarker top={500} left={250} name={"Leslie"} />
                 </div>
               </TransformComponent>
             </>
