@@ -17,8 +17,15 @@ const room = (params) => {
         navigator.mediaDevices.getUserMedia({audio: true, video: false}).then(stream => {
             userVoice.current.srcObject = stream;
             socket.current.emit("join", roomID);
-            socket.current.on("users", users => {
-
+            socket.current.on("user list", users => {
+                //Iterate through each user present in the room and create a local peer for each of the users in the room.
+                for (id of users){
+                    const peer = initPeer(id, socket.current.id, stream);
+                    peers.current.push({
+                        peerID: id,
+                        peer
+                    })
+                }
             })
         })
     })
