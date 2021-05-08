@@ -107,7 +107,7 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => history.push(`/room/${name}`)}
+      onClick={() => history.push(`/${name}`)}
     >
       {name}
     </LocationButton>

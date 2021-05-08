@@ -107,7 +107,7 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => history.push(`/room/${name}`)}
+      onClick={() => history.push(`/Leslie/room/${name}`)}
     >
       {name}
     </LocationButton>
@@ -150,11 +150,11 @@ function LeslieSocial(props) {
           <>
             <TransformComponent>
               <div style={{ position: "relative" }}>
-                <img src={uctmap} width="1500px" />
-                <LocationMarker top={540} left={270} name={"LS01"} />
-                <LocationMarker top={430} left={720} name={"LS02"} />
-                <LocationMarker top={580} left={1250} name={"Tables"} />
-                <LocationMarker top={410} left={300} name={"Study Room 1"} />
+                <img src={lesliemap} width="1500px" />
+                <LocationMarker top={450} left={150} name={"LS01"} />
+                <LocationMarker top={450} left={560} name={"LS02"} />
+                <LocationMarker top={180} left={1250} name={"Tables"} />
+                <LocationMarker top={160} left={55} name={"Study Room 1"} />
               </div>
             </TransformComponent>
           </>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import LeslieSocial from "./LeslieSocial";
 import reportWebVitals from "./reportWebVitals";
 
 import "./styles.css";
@@ -207,6 +208,13 @@ const Index = () => {
               handleCloseStartDialog={handleCloseStartDialog}
               handleEnter={handleEnter}
               handleChangeName={handleChangeName}
+            />
+          </Route>
+          <Route path="/Leslie" exact>
+            <LeslieSocial
+                handleCloseStartDialog={handleCloseStartDialog}
+                handleEnter={handleEnter}
+                handleChangeName={handleChangeName}
             />
           </Route>
           {/* <Route path="/room/:roomID">
