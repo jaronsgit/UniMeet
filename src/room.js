@@ -1,12 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
+import "./index.css";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 import { useHistory, useParams } from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  title: {
+    marginRight: theme.spacing(2),
+    fontWeight: "700",
+    marginTop: "30px",
+
+  }
+}));
 
 const Video = (props) => {
   const ref = useRef();
@@ -158,10 +170,17 @@ const Room = (props) => {
 
   return (
     <div>
-      <video muted ref={userVideo} autoPlay playsInline />
+      <Typography align="left" variant="h3" className={useStyles().title}>
+      You are in {roomID}
+    </Typography>
+      <Typography align="left" variant="h6" className={useStyles().title}>
+        Other students here:
+      </Typography>
+      <video muted ref={userVideo} autoPlay playsInline/>
       {peers.map((peer) => {
         return <Video key={peer.peerID} peer={peer.peer} />;
       })}
+
       <List component="nav" aria-label="secondary mailbox folders">
         {peerNames.map((peerNameObj, index) => {
           return (
