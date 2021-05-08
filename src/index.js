@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import LeslieSocial from "./LeslieSocial";
-import Library from "./Library"
+import Library from "./Library";
 import reportWebVitals from "./reportWebVitals";
 
 import "./styles.css";
@@ -45,7 +45,6 @@ import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 import RWJames from "./RWJames";
 import Menzies from "./Menzies";
-
 
 import Room from "./room.js";
 
@@ -146,7 +145,7 @@ const Index = () => {
         <AppBar
           position="static"
           elevation={0}
-          style={{ border: "1px solid red" }}
+          // style={{ border: "1px solid red" }}
         >
           <Toolbar>
             <Grid container direction="row" alignItems="center">
@@ -171,7 +170,9 @@ const Index = () => {
             },
           }}
         >
-          <DialogTitle id="simple-dialog-title">Welcome to UniMeet</DialogTitle>
+          <DialogTitle id="simple-dialog-title" variant="heading2">
+            Welcome to UniMeet
+          </DialogTitle>
           <Card className={classes.root} variant="outlined">
             <CardContent>
               <Grid
@@ -181,6 +182,15 @@ const Index = () => {
                 alignItems="center"
                 spacing={2}
               >
+                <Grid item style={{ maxWidth: "345" }}>
+                  <Typography variant="heading5" style={{ maxWidth: "345" }}>
+                    Explore the virtual UCT campus.
+                  </Typography>
+                  <Typography variant="subtitle1" style={{ maxWidth: "345" }}>
+                    Meet up with your friends, collaborate with others <br />
+                    and connect with new people.
+                  </Typography>
+                </Grid>
                 <Grid item style={{ width: "100%" }}>
                   <TextField
                     label="Name"
@@ -216,35 +226,35 @@ const Index = () => {
           </Route>
           <Route path="/Leslie" exact>
             <LeslieSocial
-                handleCloseStartDialog={handleCloseStartDialog}
-                handleEnter={handleEnter}
-                handleChangeName={handleChangeName}
+              handleCloseStartDialog={handleCloseStartDialog}
+              handleEnter={handleEnter}
+              handleChangeName={handleChangeName}
             />
           </Route>
-            <Route path="/Library" exact>
-                <Library
-                    handleCloseStartDialog={handleCloseStartDialog}
-                    handleEnter={handleEnter}
-                    handleChangeName={handleChangeName}
-                />
-            </Route>
-            <Route path="/RW-James" exact>
-                <RWJames
-                    handleCloseStartDialog={handleCloseStartDialog}
-                    handleEnter={handleEnter}
-                    handleChangeName={handleChangeName}
-                />
-            </Route>
-            <Route path="/Menzies" exact>
-                <Menzies
-                    handleCloseStartDialog={handleCloseStartDialog}
-                    handleEnter={handleEnter}
-                    handleChangeName={handleChangeName}
-                />
-            </Route>
-            <Route path="*/room/:roomID">
-                <Room name={name} />
-            </Route>
+          <Route path="/Library" exact>
+            <Library
+              handleCloseStartDialog={handleCloseStartDialog}
+              handleEnter={handleEnter}
+              handleChangeName={handleChangeName}
+            />
+          </Route>
+          <Route path="/RW-James" exact>
+            <RWJames
+              handleCloseStartDialog={handleCloseStartDialog}
+              handleEnter={handleEnter}
+              handleChangeName={handleChangeName}
+            />
+          </Route>
+          <Route path="/Menzies" exact>
+            <Menzies
+              handleCloseStartDialog={handleCloseStartDialog}
+              handleEnter={handleEnter}
+              handleChangeName={handleChangeName}
+            />
+          </Route>
+          <Route path="*/room/:roomID">
+            <Room name={name} />
+          </Route>
         </Switch>
       </div>
     </ThemeProvider>
