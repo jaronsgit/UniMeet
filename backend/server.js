@@ -40,10 +40,22 @@ io.on("connection", (socket) => {
   });
 
   //Signal sent to other users that new user has joined
-  socket.on("forward signal", (payload) => {});
+  socket.on("forward signal", (payload) => {
+    io.to(payload.userToSignal).emit("user entered", {
+      signal: payload.signal,
+      socketID: payload.socketID,
+      name: payload.name,
+    });
+  });
 
   //Signal back to new user from other peers
-  socket.on("back signal", (payload) => {});
+  socket.on("back signal", (payload) => {
+    io.to(payload.callerID).emit("returned signal", {
+      signal: payload.signal,
+      socketID: socket.id,
+      name: payload.name,
+    });
+  });
 
   //User disconnects from room
   socket.on("disconnect", () => {});
