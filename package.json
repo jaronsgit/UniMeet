@@ -8,6 +8,6 @@
   },
   "scripts": {
     "start": "PROD=true node server.js",
-    "postinstall" : "cd ./frontend && npm install && npm run build"
+    "postinstall" : "cd ./client && npm install && npm run build"
   }
 }

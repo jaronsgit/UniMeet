@@ -1,12 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const http = require("http");
-const app = express();
+const app = express()
 const server = http.createServer(app);
 const socket = require("socket.io");
-const io = socket(server);
+const io = require('socket.io')(server, { origins: '*:*'});
 const path = require("path")
-
 
 const users = {}; //Users object stores room objects with objects to store socket information of users in each room
 const userSocketRoomMap = {}; //Store object of user socket ids with room ids for disconnection
@@ -75,10 +74,11 @@ io.on("connection", (socket) => {
 });
 
 if (process.env.PROD){
-    app.use(express.static(path.join(__dirname,'./frontend/build')));
-    app.get('*',(req,res) =>{res.sendFile(path.join(__dirname,'./frontend/build/index.html'))})
+  app.use(express.static(path.join(__dirname,'./frontend/build')));
+  app.get('*',(req,res) =>{res.sendFile(path.join(__dirname,'./frontend/build/index.html'))})
 }
 
-server.listen(process.env.PORT || 8000, () =>
-  console.log("server is running on port 8000")
+const port = process.env.PORT || 8000;
+server.listen(port, () =>
+  console.log("server is running on port",port)
 );
