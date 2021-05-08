@@ -42,7 +42,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
 
-// import Room from "./room.js";
+import Room from "./room.js";
 
 const font = '"Vollkorn", Arial, Helvetica, sans-serif';
 const theme = createMuiTheme({
@@ -209,9 +209,9 @@ const Index = () => {
               handleChangeName={handleChangeName}
             />
           </Route>
-          {/* <Route path="/room/:roomID">
+          <Route path="/room/:roomID">
             <Room name={name} />
-          </Route> */}
+          </Route>
         </Switch>
       </div>
     </ThemeProvider>
