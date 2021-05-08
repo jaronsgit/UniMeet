@@ -40,7 +40,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { motion } from "framer-motion";
 
-import uctmap from "./uctmap.png";
+import librarymap from "./Library.jpeg";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { blue, purple } from "@material-ui/core/colors";
 
@@ -107,14 +107,14 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => history.push(`/${name}`)}
+      onClick={() => history.push(`/Library/room/${name}`)}
     >
       {name}
     </LocationButton>
   );
 };
 
-function App(props) {
+function Library(props) {
   const classes = useStyles();
   console.log(props);
 
@@ -150,11 +150,11 @@ function App(props) {
           <>
             <TransformComponent>
               <div style={{ position: "relative" }}>
-                <img src={uctmap} width="1500px" />
-                <LocationMarker top={540} left={270} name={"Leslie"} />
-                <LocationMarker top={430} left={720} name={"Library"} />
-                <LocationMarker top={580} left={1250} name={"RW-James"} />
-                <LocationMarker top={410} left={300} name={"Menzies"} />
+                <img src={librarymap} width="1500px" />
+                <LocationMarker top={155} left={92} name={"Study Desk 1"} />
+                <LocationMarker top={155} left={280} name={"Study Desk 2"} />
+                <LocationMarker top={565} left={1090} name={"Group Desk 1"} />
+                <LocationMarker top={565} left={1280} name={"Group Desk 2"} />
               </div>
             </TransformComponent>
           </>
@@ -164,4 +164,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default Library;

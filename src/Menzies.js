@@ -40,7 +40,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { motion } from "framer-motion";
 
-import uctmap from "./uctmap.png";
+import menziesmap from "./Menzies.jpeg";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { blue, purple } from "@material-ui/core/colors";
 
@@ -107,14 +107,14 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => history.push(`/${name}`)}
+      onClick={() => history.push(`/Menzies/room/${name}`)}
     >
       {name}
     </LocationButton>
   );
 };
 
-function App(props) {
+function Menzies(props) {
   const classes = useStyles();
   console.log(props);
 
@@ -150,11 +150,11 @@ function App(props) {
           <>
             <TransformComponent>
               <div style={{ position: "relative" }}>
-                <img src={uctmap} width="1500px" />
-                <LocationMarker top={540} left={270} name={"Leslie"} />
-                <LocationMarker top={430} left={720} name={"Library"} />
-                <LocationMarker top={580} left={1250} name={"RW-James"} />
-                <LocationMarker top={410} left={300} name={"Menzies"} />
+                <img src={menziesmap} width="1500px" />
+                <LocationMarker top={810} left={100} name={"Menzies 9"} />
+                <LocationMarker top={400} left={100} name={"Menzies 10"} />
+                <LocationMarker top={280} left={1190} name={"Lunch Room"} />
+                <LocationMarker top={795} left={1120} name={"CAD Lab"} />
               </div>
             </TransformComponent>
           </>
@@ -164,4 +164,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default Menzies;

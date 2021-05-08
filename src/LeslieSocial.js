@@ -40,7 +40,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { motion } from "framer-motion";
 
-import uctmap from "./uctmap.png";
+import lesliemap from "./LeslieSocial.jpeg";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { blue, purple } from "@material-ui/core/colors";
 
@@ -107,14 +107,14 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
-      onClick={() => history.push(`/${name}`)}
+      onClick={() => history.push(`/Leslie/room/${name}`)}
     >
       {name}
     </LocationButton>
   );
 };
 
-function App(props) {
+function LeslieSocial(props) {
   const classes = useStyles();
   console.log(props);
 
@@ -150,11 +150,11 @@ function App(props) {
           <>
             <TransformComponent>
               <div style={{ position: "relative" }}>
-                <img src={uctmap} width="1500px" />
-                <LocationMarker top={540} left={270} name={"Leslie"} />
-                <LocationMarker top={430} left={720} name={"Library"} />
-                <LocationMarker top={580} left={1250} name={"RW-James"} />
-                <LocationMarker top={410} left={300} name={"Menzies"} />
+                <img src={lesliemap} width="1500px" />
+                <LocationMarker top={450} left={150} name={"LS01"} />
+                <LocationMarker top={450} left={560} name={"LS02"} />
+                <LocationMarker top={180} left={1250} name={"Tables"} />
+                <LocationMarker top={160} left={55} name={"Study Room 1"} />
               </div>
             </TransformComponent>
           </>
@@ -164,4 +164,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default LeslieSocial;
