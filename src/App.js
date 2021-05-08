@@ -44,30 +44,7 @@ import uctmap from "./uctmap.png";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { blue, purple } from "@material-ui/core/colors";
 
-const font = '"Vollkorn", Arial, Helvetica, sans-serif';
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: font,
-  },
-  palette: {
-    primary: {
-      // light: will be calculated from palette.primary.main,
-      main: "#ffffff",
-      // dark: will be calculated from palette.primary.main,
-      // contrastText: will be calculated to contrast with palette.primary.main
-    },
-    secondary: {
-      main: "#006cbc",
-    },
-    // Used by `getContrastText()` to maximize the contrast between
-    // the background and the text.
-    contrastThreshold: 3,
-    // Used by the functions below to shift a color's luminance by approximately
-    // two indexes within its tonal palette.
-    // E.g., shift from Red 500 to Red 300 or Red 700.
-    tonalOffset: 0.2,
-  },
-});
+import { useHistory, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,6 +92,7 @@ const LocationButton = withStyles((theme) => ({
 //250, 500
 
 const LocationMarker = ({ top, left, name }) => {
+  const history = useHistory();
   return (
     <LocationButton
       variant="contained"
@@ -129,151 +107,60 @@ const LocationMarker = ({ top, left, name }) => {
         transition: { duration: 0.3 },
       }}
       whileTap={{ scale: 0.9 }}
+      onClick={() => history.push(`/room/${name}`)}
     >
       {name}
     </LocationButton>
   );
 };
 
-function App() {
+function App(props) {
   const classes = useStyles();
-  const [startDialogOpen, setStartDialogOpen] = useState(true);
-  const [name, setName] = useState("");
+  console.log(props);
 
-  //Reset the vh unit measurement
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
-
-  const handleCloseStartDialog = () => {
-    setStartDialogOpen(false);
-  };
-
-  const handleChangeName = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleEnter = (event) => {
-    handleCloseStartDialog();
-  };
+  const history = useHistory();
+  // let { roomID } = useParams();
 
   return (
-    <ThemeProvider theme={theme}>
-      <div
-        style={{
-          fontFamily: "Vollkorn",
-          display: "flex",
-          flexDirection: "column",
-          height: 100 * vh,
-          WebkitOverflowScrolling: "touch",
-          touchAction: "none",
+    <div>
+      <TransformWrapper
+        style={{}}
+        options={{
+          limitToBounds: false,
         }}
-        overflow="hidden"
-        onTouchStart={(e) => {
-          e.preventDefault();
+        wheel={{
+          wheelEnabled: true,
+          touchPadEnabled: true,
+          limitsOnWheel: false,
+          step: 60,
         }}
       >
-        <AppBar
-          position="static"
-          elevation={0}
-          // style={{ border: "1px solid red" }}
-        >
-          <Toolbar>
-            <Grid container direction="row" alignItems="center">
-              <Grid item></Grid>
-              <Grid item>
-                <Typography variant="h5" className={classes.title}>
-                  UniMeet
-                </Typography>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <Dialog
-          onClose={handleCloseStartDialog}
-          aria-labelledby="simple-dialog-title"
-          open={startDialogOpen}
-          disableBackdropClick
-          disableEscapeKeyDown
-          BackdropProps={{
-            classes: {
-              root: classes.startBackdrop,
-            },
-          }}
-        >
-          <DialogTitle id="simple-dialog-title">Welcome to UniMeet</DialogTitle>
-          <Card className={classes.root} variant="outlined">
-            <CardContent>
-              <Grid
-                container
-                direction="column"
-                justify="center"
-                alignItems="center"
-                spacing={2}
-              >
-                <Grid item style={{ width: "100%" }}>
-                  <TextField
-                    label="Name"
-                    autoComplete="current-password"
-                    variant="filled"
-                    value={name}
-                    onChange={handleChangeName}
-                  />
-                </Grid>
-                <Grid item className={classes.formControl}>
-                  <Button
-                    variant={"contained"}
-                    disableElevation
-                    onClick={handleEnter}
-                    width="100%"
-                    disabled={name == ""}
-                    color={"secondary"}
-                  >
-                    Enter UCT
-                  </Button>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Dialog>
-        <TransformWrapper
-          style={{}}
-          options={{
-            limitToBounds: false,
-          }}
-          wheel={{
-            wheelEnabled: true,
-            touchPadEnabled: true,
-            limitsOnWheel: false,
-            step: 60,
-          }}
-        >
-          {({
-            zoomIn,
-            zoomOut,
-            resetTransform,
-            setDefaultState,
-            positionX,
-            positionY,
-            scale,
-            previousScale,
-            options: { limitToBounds, transformEnabled, disabled },
-            ...rest
-          }) => (
-            <>
-              <TransformComponent>
-                <div style={{ position: "relative" }}>
-                  <img src={uctmap} width="1500px" />
-                  <LocationMarker top={540} left={270} name={"Leslie"} />
-                  <LocationMarker top={430} left={720} name={"Library"} />
-                  <LocationMarker top={580} left={1250} name={"RW James"} />
-                  <LocationMarker top={410} left={300} name={"Menzies"} />
-                </div>
-              </TransformComponent>
-            </>
-          )}
-        </TransformWrapper>
-      </div>
-    </ThemeProvider>
+        {({
+          zoomIn,
+          zoomOut,
+          resetTransform,
+          setDefaultState,
+          positionX,
+          positionY,
+          scale,
+          previousScale,
+          options: { limitToBounds, transformEnabled, disabled },
+          ...rest
+        }) => (
+          <>
+            <TransformComponent>
+              <div style={{ position: "relative" }}>
+                <img src={uctmap} width="1500px" />
+                <LocationMarker top={540} left={270} name={"Leslie"} />
+                <LocationMarker top={430} left={720} name={"Library"} />
+                <LocationMarker top={580} left={1250} name={"RW James"} />
+                <LocationMarker top={410} left={300} name={"Menzies"} />
+              </div>
+            </TransformComponent>
+          </>
+        )}
+      </TransformWrapper>
+    </div>
   );
 }
 
