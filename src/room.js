@@ -36,11 +36,42 @@ const Room = (props) => {
   //Create peer for other users received already in room
   function createOtherUserPeer(userToSignal, socketID, stream, name) {
     console.log("createOtherUserPeer: ", userToSignal, socketID, stream, name);
+
+    const peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream,
+    });
+
+    peer.on("signal", (signal) => {
+      socketRef.current.emit("forward signal", {
+        userToSignal,
+        socketID,
+        signal,
+        name,
+      });
+    });
+
+    return peer;
   }
 
   //Add new peer that entered the room we are already in
   function addNewPeer(incomingSignal, socketID, stream, name) {
     console.log("addNewPeer: ", incomingSignal, socketID, stream, name);
+
+    const peer = new Peer({
+      initiator: false,
+      trickle: false,
+      stream,
+    });
+
+    peer.on("signal", (signal) => {
+      socketRef.current.emit("back signal", { signal, socketID, name });
+    });
+
+    peer.signal(incomingSignal); //signal the new peer back
+
+    return peer;
   }
 
   return <div></div>;
