@@ -46,6 +46,11 @@ const Room = (props) => {
 
   const [peerNames, setPeerNames] = useState([]);
 
+  window.addEventListener('popstate', function(event){
+    socketRef.current.disconnect()
+  }, false);
+
+
   //Use effect to run once when we enter room for first time
   useEffect(() => {
     socketRef.current = io.connect("/"); //connect to server endpoint and get socket to server
