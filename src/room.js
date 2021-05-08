@@ -2,6 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+
+import { useHistory, useParams } from "react-router-dom";
+
+const Video = (props) => {
+  const ref = useRef();
+
+  useEffect(() => {
+    props.peer.on("stream", (stream) => {
+      ref.current.srcObject = stream;
+    });
+  }, []);
+
+  return (
+    <div style={{ border: "1px solid red", display: "none" }}>
+      <video playsInline autoPlay ref={ref} />
+    </div>
+  );
+};
+
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
   const socketRef = useRef(); //Store ref to underlying socket io socket for server
@@ -9,6 +31,8 @@ const Room = (props) => {
   const peersRef = useRef([]);
   const { roomID } = useParams(); //Get room id from url path
   const { name } = props;
+
+  const [peerNames, setPeerNames] = useState([]);
 
   //Use effect to run once when we enter room for first time
   useEffect(() => {
@@ -21,14 +45,48 @@ const Room = (props) => {
         socketRef.current.emit("enter room", roomID, name);
         socketRef.current.on("other users", (users) => {
           console.log("users received: ", users);
+          const peers = [];
+          const peerNames = [];
+          users.forEach((user) => {
+            const peer = createOtherUserPeer(
+              user.id,
+              socketRef.current.id,
+              stream,
+              name
+            );
+            peersRef.current.push({
+              peerID: user.id,
+              peer,
+            });
+            peers.push(peer);
+            peerNames.push(user.name);
+          });
+          setPeers(peers);
+          setPeerNames(peerNames);
         });
 
         socketRef.current.on("user entered", (payload) => {
           console.log("user entered: ", payload);
+          const peer = addNewPeer(
+            payload.signal,
+            payload.socketID,
+            stream,
+            payload.name
+          );
+          peersRef.current.push({
+            peerID: payload.socketID,
+            peer,
+          });
+          setPeerNames((peerNames) => [...peerNames, payload.name]);
+          setPeers((users) => [...users, peer]);
         });
 
         socketRef.current.on("returned signal", (payload) => {
           console.log("returned signal: ", payload);
+          const peerToSignalBack = peersRef.current.find(
+            (p) => p.peerID === payload.socketID
+          );
+          peerToSignalBack.peer.signal(payload.signal);
         });
       });
   }, []);
@@ -74,7 +132,23 @@ const Room = (props) => {
     return peer;
   }
 
-  return <div></div>;
+  return (
+    <div>
+      <video muted ref={userVideo} autoPlay playsInline />
+      {peers.map((peer, index) => {
+        return <Video key={index} peer={peer} />;
+      })}
+      <List component="nav" aria-label="secondary mailbox folders">
+        {peerNames.map((name, index) => {
+          return (
+            <ListItem button key={index}>
+              <ListItemText primary={name} />
+            </ListItem>
+          );
+        })}
+      </List>
+    </div>
+  );
 };
 
 export default Room;
