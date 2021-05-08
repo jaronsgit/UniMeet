@@ -122,9 +122,9 @@ function App(props) {
   // let { roomID } = useParams();
 
   return (
-    <div>
+    <div style={{ width: "100%", height: "100%" }}>
       <TransformWrapper
-        style={{}}
+        style={{ width: "100%", height: "100%" }}
         options={{
           limitToBounds: false,
         }}
@@ -147,8 +147,8 @@ function App(props) {
           options: { limitToBounds, transformEnabled, disabled },
           ...rest
         }) => (
-          <>
-            <TransformComponent>
+          <div style={{ width: "100%", height: "100%" }}>
+            <TransformComponent style={{ width: "100%", height: "100%" }}>
               <div style={{ position: "relative" }}>
                 <img src={uctmap} width="1500px" />
                 <LocationMarker top={540} left={270} name={"Leslie"} />
@@ -157,7 +157,7 @@ function App(props) {
                 <LocationMarker top={410} left={300} name={"Menzies"} />
               </div>
             </TransformComponent>
-          </>
+          </div>
         )}
       </TransformWrapper>
     </div>
