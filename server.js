@@ -75,8 +75,8 @@ io.on("connection", (socket) => {
 });
 
 if (process.env.PROD){
-    app.use(express.static(path.join(__dirname,'./client/build')));
-    app.get('*',(req,res) =>{res.sendFile(path.join(__dirname,'./client/build/index.html'))})
+    app.use(express.static(path.join(__dirname,'./frontend/build')));
+    app.get('*',(req,res) =>{res.sendFile(path.join(__dirname,'./frontend/build/index.html'))})
 }
 
 server.listen(process.env.PORT || 8000, () =>
