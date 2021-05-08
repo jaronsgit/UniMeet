@@ -58,8 +58,11 @@ const Room = (props) => {
               peerID: user.id,
               peer,
             });
-            peers.push(peer);
-            peerNames.push(user.name);
+            peers.push({
+              peerID: user.id,
+              peer,
+            });
+            peerNames.push({ name: user.name, id: user.id });
           });
           setPeers(peers);
           setPeerNames(peerNames);
@@ -77,8 +80,15 @@ const Room = (props) => {
             peerID: payload.socketID,
             peer,
           });
-          setPeerNames((peerNames) => [...peerNames, payload.name]);
-          setPeers((users) => [...users, peer]);
+          const newPeer = {
+            peerID: payload.socketID,
+            peer,
+          };
+          setPeerNames((peerNames) => [
+            ...peerNames,
+            { name: payload.name, id: payload.socketID },
+          ]);
+          setPeers((users) => [...users, newPeer]);
         });
 
         socketRef.current.on("returned signal", (payload) => {
@@ -87,6 +97,20 @@ const Room = (props) => {
             (p) => p.peerID === payload.socketID
           );
           peerToSignalBack.peer.signal(payload.signal);
+        });
+
+        socketRef.current.on("user left", (id) => {
+          const leftPeer = peersRef.current.filter((p) => p.peerID === id); //Find peer thats leaving
+          if (leftPeer) {
+            //If not null
+            leftPeer[0].peer.destroy(); //Cleans up all connections
+            const peers = peersRef.current.filter((p) => p.peerID !== id); //Remove the peer from peers peersRef
+            peersRef.current = peers;
+            setPeers(peers);
+            setPeerNames((peerNames) =>
+              peerNames.filter((peerNameObj) => peerNameObj.id !== id)
+            );
+          }
         });
       });
   }, []);
@@ -135,14 +159,14 @@ const Room = (props) => {
   return (
     <div>
       <video muted ref={userVideo} autoPlay playsInline />
-      {peers.map((peer, index) => {
-        return <Video key={index} peer={peer} />;
+      {peers.map((peer) => {
+        return <Video key={peer.peerID} peer={peer.peer} />;
       })}
       <List component="nav" aria-label="secondary mailbox folders">
-        {peerNames.map((name, index) => {
+        {peerNames.map((peerNameObj, index) => {
           return (
-            <ListItem button key={index}>
-              <ListItemText primary={name} />
+            <ListItem button key={peerNameObj.id}>
+              <ListItemText primary={peerNameObj.name} />
             </ListItem>
           );
         })}

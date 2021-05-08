@@ -58,7 +58,18 @@ io.on("connection", (socket) => {
   });
 
   //User disconnects from room
-  socket.on("disconnect", () => {});
+  socket.on("disconnect", () => {
+    const roomID = userSocketRoomMap[socket.id]; //Get room user was currently in
+
+    console.log("user leaving", socket.id);
+    let room = users[roomID]; //Get all users in the room
+    if (room) { //Room does exist - unnecessary
+      room = room.filter(peer => peer.id !== socket.id); //Remove current person from room
+      users[roomID] = room //Update users in room with new members in the room
+    }
+    socket.broadcast.emit('user left', socket.id); //Wouldn't this broadcast to all rooms?
+
+  });
 });
 
 server.listen(process.env.PORT || 8000, () =>
