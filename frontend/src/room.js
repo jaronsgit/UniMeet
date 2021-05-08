@@ -48,8 +48,9 @@ const Room = (props) => {
 
   //Use effect to run once when we enter room for first time
   useEffect(() => {
-    socketRef.current = io.connect("/"); //connect to server endpoint and get socket to server
-    //Get access to device media stream - need to ask for permission - remember https for later
+    socketRef.current = io("https://unimeet-hackathon-backend.herokuapp.com"); //connect to server endpoint and get socket to server
+    console.log("SOCKET",socketRef.current)
+      //Get access to device media stream - need to ask for permission - remember https for later
     navigator.mediaDevices
       .getUserMedia({ video: false, audio: true })
       .then((stream) => {
