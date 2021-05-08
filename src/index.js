@@ -242,7 +242,7 @@ const Index = () => {
                     handleChangeName={handleChangeName}
                 />
             </Route>
-            <Route path="/room/:roomID">
+            <Route path="*/room/:roomID">
                 <Room name={name} />
             </Route>
         </Switch>
