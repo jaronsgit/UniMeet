@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import LeslieSocial from "./LeslieSocial";
+import Library from "./Library"
 import reportWebVitals from "./reportWebVitals";
 
 import "./styles.css";
@@ -42,6 +43,7 @@ import {
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Chip from "@material-ui/core/Chip";
+
 
 // import Room from "./room.js";
 
@@ -217,6 +219,13 @@ const Index = () => {
                 handleChangeName={handleChangeName}
             />
           </Route>
+            <Route path="/Library" exact>
+                <Library
+                    handleCloseStartDialog={handleCloseStartDialog}
+                    handleEnter={handleEnter}
+                    handleChangeName={handleChangeName}
+                />
+            </Route>
           {/* <Route path="/room/:roomID">
             <Room name={name} />
           </Route> */}
